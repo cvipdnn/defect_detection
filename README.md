@@ -7,22 +7,21 @@ This repo compare several methods to defect classificaton and detecton. The data
 ### Prerequisites
 * Keras 2.4.3
 * Tensorflow 2.2.0
-* Coco API
 * Opencv for python
 
 
-## Usage via command line
+## Developped Methods
 
-### Training the Model 
+1. Convolutional Neural Network based Classifier
 
-
-### Training Stats
-The training set is coco/train2017 and the validation set is coco/val2017. The pretained model under model is getting 96.42% accuracy for training set and 92.9% accuracy for validation set. 
-
-### Inference
+a)[MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mobilenetv2)
 
 
-![](result.png)
+b)[SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
+
+
+
+
 
 
 ## References
