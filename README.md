@@ -10,7 +10,8 @@ This repo compare methods to defect classificaton and detecton. Reference [2] gi
 * Opencv for python
 
 ### DAGM 2007 Dataset
-There are 6 different data sets and each simulated using a different texture and defect model. Each data set has training set which is under Train folder and testing set which is under Test folder. 
+There are 6 different data sets and each simulated using a different texture and defect model. Each data set has training set which is under Train folder and testing set which is under Test folder. A defect image and its mask image are shown below.
+![](defect_mask.png) 
 
 ## Methods
 1.Convolutional Neural Network based Classifier
