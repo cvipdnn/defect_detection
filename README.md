@@ -20,7 +20,7 @@ b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simpl
 
 
 Method | a) | b) 
---- | --- 
+--- | --- | ---
 Accuracy | 99.97% | 85.7 
 
 
