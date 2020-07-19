@@ -11,6 +11,7 @@ This repo compare several methods to defect classificaton and detecton. The data
 
 
 ## Methods
+There are 6 different data sets and each simulated using a different texture and defect model. Each data set has training set which is under Train folder and testing set which is under Test folder. 
 
 1.Convolutional Neural Network based Classifier
 
@@ -21,7 +22,7 @@ b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simpl
 
 Method | a) | b) 
 --- | --- | ---
-Accuracy | 99.97% | 85.7 
+Accuracy(testing set) | 99.971% | 85.913%
 
 
 
