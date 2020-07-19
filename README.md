@@ -1,4 +1,4 @@
-# Semantic_Segmentation
+# Defect Detection/Classification
 This repo compare several methods to defect classificaton and detecton. The dataset I used is [DAGM 2007](https://conferences.mpi-inf.mpg.de/dagm/2007/prizes.html) . 
 
 
@@ -10,16 +10,18 @@ This repo compare several methods to defect classificaton and detecton. The data
 * Opencv for python
 
 
-## Developped Methods
+## Methods
 
-1. Convolutional Neural Network based Classifier
+1.Convolutional Neural Network based Classifier
 
-a)[MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mobilenetv2)
+a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mobilenetv2)
+
+b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
 
 
-b)[SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
-
-
+Method | a) | b) 
+--- | --- 
+Accuracy | 99.97% | 85.7 
 
 
 
