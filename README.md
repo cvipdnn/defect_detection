@@ -30,9 +30,9 @@ Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512
 --- | --- | --- | ---
 1.a) | 100.0% | 99.56%|  28944.9G
 1.b)| 100.0% | 0% | 63.2G 
-2) | 97.5% | 93.17%  |  63.2G
+2)| 97.5% | 93.17% | 63.2G 
 
-## Code Location
+## Code List
 1. cnn: Convolutional Neural Network based Classifier
 2. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
 
