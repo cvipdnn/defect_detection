@@ -20,7 +20,7 @@ a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mob
 
 b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
 
-2. [Semantic Segmenation with Fully Convolutional Neural Network + Classifier](https://github.com/cvipdnn/defect_detection/tree/master/fcn)
+2.[Semantic Segmenation with Fully Convolutional Neural Network + Classifier](https://github.com/cvipdnn/defect_detection/tree/master/fcn)
  
 In reference 4, it first runs semantic segmentation , then it runs a decision network to check if the whole image contains defect or not. In my current implementation, for simplicity, instead of using decision metwork, I am using the number of pixels with defect to classify. 
 
