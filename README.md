@@ -24,7 +24,7 @@ b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simpl
 In reference 4, it first runs semantic segmentation , then it runs a decision network to check if the whole image contains defect or not. In my current implementation, for simplicity, instead of using decision metwork, I am using the number of pixels with defect to classify. 
 
  
-The accuracy for the testing set. 
+### The accuracy of the testing set. 
 
 Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512x512 image) 
 --- | --- | --- | ---
@@ -32,7 +32,8 @@ Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512
 1.b)| 100.0% | 0% | 63.2G 
 2)| 97.5% | 93.17% | 63.2G 
 
-## Code List
+### Code List and Location
+
 1. cnn: Convolutional Neural Network based Classifier
 2. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
 
