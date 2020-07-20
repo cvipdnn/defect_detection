@@ -153,6 +153,7 @@ history = model.fit(x=train_gen,
                 steps_per_epoch=steps_per_epoch,
                 validation_steps = validation_steps,
                 callbacks = [mc],
+                class_weight = {0: 1.,1: 6.6},
                 epochs = epochs,
                 verbose = True)
 

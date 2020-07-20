@@ -24,7 +24,6 @@ IMAGE_ORDERING = 'channels_last'
 
 image_size= 512
 
-
 def SimpleCNN(input_height, input_width):
     img_input = Input(shape=(input_height, input_width, 1))
 
@@ -35,34 +34,37 @@ def SimpleCNN(input_height, input_width):
 
 
 
-    x = SeparableConv2D(24, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
+    x = SeparableConv2D(36, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
                data_format=IMAGE_ORDERING)(x)
-    x = SeparableConv2D(24, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
+    x = SeparableConv2D(36, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
                data_format=IMAGE_ORDERING)(x)
-    x = SeparableConv2D(24, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
+    x = SeparableConv2D(36, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
                data_format=IMAGE_ORDERING)(x)
 
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool2', data_format=IMAGE_ORDERING)(x)
 
 
 
-    x = SeparableConv2D(16, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv40',
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv40',
                data_format=IMAGE_ORDERING)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool3', data_format=IMAGE_ORDERING)(x)
 
 
 
-    x = SeparableConv2D(16, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv4', data_format=IMAGE_ORDERING)(x)
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv4', data_format=IMAGE_ORDERING)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool4', data_format=IMAGE_ORDERING)(x)
+
+    x = SeparableConv2D(36, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv5', data_format=IMAGE_ORDERING)(x)
 
     x = Flatten()(x)
 
-    x = Dense(512, activation='relu')(x)
-    x = Dense(128, activation='relu')(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dense(256, activation='relu')(x)
     x = Dense(2, activation='softmax')(x)
 
     model = Model(img_input, x)
     return model
+
 
 def imageGenerator(images, y, batch_size=32):
     image_num = images.shape[0]
@@ -78,11 +80,8 @@ def imageGenerator(images, y, batch_size=32):
             imageObj = images[index]
 
             ### Extract Image ###
-            cur_img = plt.imread(imageObj)*255
+            cur_img = plt.imread(imageObj)
 
-            # normalized to (-1,1)
-            cur_img = tf.keras.applications.mobilenet_v2.preprocess_input(cur_img)
-            # Add to respective batch sized arrays
             img[i - c] = cur_img
 
             y_label [ i -c ] = y[index]
@@ -104,6 +103,7 @@ dirList = os.listdir(dataDir)
 
 images = []
 class_image = []
+
 for dir in dirList:
     curDirTrain = dataDir + dir + '/Train/'
 
@@ -122,18 +122,19 @@ for dir in dirList:
             elif row[1] =='0':
                 class_image.append(0)
 
-
 class_image = to_categorical(class_image, num_classes=2)
 
 
 images = np.array(images)
+
+
 class_image = np.array(class_image)
 
 model = SimpleCNN(image_size, image_size)
 #model.load_weights('./model/pretrained.h5')
 model.summary()
 
-# 80% used for training , 20% used for validation
+
 x_train, x_valid, y_train, y_valid = train_test_split(images, class_image, test_size=0.2, random_state = 32)
 
 batchsize = 16
@@ -168,24 +169,8 @@ history = model.fit(x=train_gen,
                 steps_per_epoch=steps_per_epoch,
                 validation_steps = validation_steps,
                 callbacks = [mc],
+                class_weight = {0: 1.,1: 6.6},
                 epochs = epochs,
                 verbose = True)
 
-#print(history.history.keys())
-# display history
-plt.subplot(211)
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('epoch')
-plt.legend(['train', 'validation'])
-plt.subplot(212)
-# summarize history for loss
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Loss')
-plt.ylabel('Loss')
-plt.xlabel('epoch')
-plt.legend(['train', 'validation'])
-plt.show()
+

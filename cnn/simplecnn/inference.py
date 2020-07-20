@@ -35,31 +35,35 @@ def SimpleCNN(input_height, input_width):
 
 
 
-    x = SeparableConv2D(24, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
+    x = SeparableConv2D(36, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
                data_format=IMAGE_ORDERING)(x)
-    x = SeparableConv2D(24, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
+    x = SeparableConv2D(36, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
                data_format=IMAGE_ORDERING)(x)
-    x = SeparableConv2D(24, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
+    x = SeparableConv2D(36, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
                data_format=IMAGE_ORDERING)(x)
 
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool2', data_format=IMAGE_ORDERING)(x)
 
 
 
-    x = SeparableConv2D(16, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv40',
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv40',
                data_format=IMAGE_ORDERING)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool3', data_format=IMAGE_ORDERING)(x)
 
 
 
-    x = SeparableConv2D(16, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv4', data_format=IMAGE_ORDERING)(x)
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv4', data_format=IMAGE_ORDERING)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool4', data_format=IMAGE_ORDERING)(x)
+
+
+    x = SeparableConv2D(36, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv5', data_format=IMAGE_ORDERING)(x)
+    x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool5', data_format=IMAGE_ORDERING)(x)
 
     x = Flatten()(x)
 
-    x = Dense(512, activation='relu')(x)
-    x = Dense(128, activation='relu')(x)
-    x = Dense(2, activation='softmax', name='output')(x)
+    x = Dense(1024, activation='relu')(x)
+    x = Dense(256, activation='relu')(x)
+    x = Dense(2, activation='softmax')(x)
 
     model = Model(img_input, x)
     return model
@@ -101,27 +105,35 @@ model = SimpleCNN(image_size, image_size)
 model.load_weights('./model/pretrained.h5')
 model.summary()
 
+
+
 model.save('test.h5')
 total_num_images = images.shape[0]
 n_good_result = 0
 x = np.zeros((1, image_size, image_size))
 
+n_good = 0
+n_defect = 0
+res_defect = 0
+res_good = 0
+
 for index in range(total_num_images):
-    cur_img = plt.imread(images[index]) * 255
-
-    # normalized to (-1,1)
-    cur_img = tf.keras.applications.mobilenet_v2.preprocess_input(cur_img)
-
+    cur_img = plt.imread(images[index])
 
     x[0]= cur_img
 
 
     y = model.predict(x)
 
-    if y[0,0] >= y[0,1] and class_image[index,0] == 1:
-        n_good_result += 1
 
-    if y[0,0] < y[0,1] and class_image[index,1] == 1:
-        n_good_result += 1
+    if class_image[index,0] == 1:
+        n_good += 1
+        if y[0, 0] >= y[0, 1]:
+            res_good += 1
 
-print(n_good_result*100/total_num_images)
+    if class_image[index,1] == 1:
+        n_defect += 1
+        if y[0,0] < y[0,1]:
+            res_defect += 1
+
+print(res_defect/n_defect, res_good/n_good, n_defect, n_good)

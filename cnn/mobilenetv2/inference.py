@@ -54,17 +54,16 @@ for dir in dirList:
 class_image = to_categorical(class_image, num_classes=2)
 
 
-testX = np.array(images)
-testY = np.array(class_image)
+images = np.array(images)
+class_image = np.array(class_image)
 
-del images
-del class_image
+
 
 
 feature_model = tf.keras.applications.MobileNetV2(input_shape=(image_size, image_size, 3), include_top=False, weights="imagenet")
 
 feature_model.summary()
-
+feature_model.save('test1.h5')
 layer = feature_model.get_layer('out_relu').output
 
 # Create the feature extraction model
@@ -88,14 +87,17 @@ model.load_weights('./model/pretrained.h5')
 model.summary()
 
 
-total_num_images = testX.shape[0]
-n_good_result = 0
+total_num_images = images.shape[0]
+
 x = np.zeros((1, image_size, image_size, 3))
 
-for index in range(total_num_images):
-    # inference only
+n_good = 0
+n_defect = 0
+res_defect = 0
+res_good = 0
 
-    cur_img = plt.imread(testX[index]) * 255
+for index in range(total_num_images):
+    cur_img = plt.imread(images[index]) * 255
 
     # normalized to (-1,1)
     cur_img = tf.keras.applications.mobilenet_v2.preprocess_input(cur_img)
@@ -108,10 +110,15 @@ for index in range(total_num_images):
 
     y = model.predict(x)
 
-    if y[0,0] >= y[0,1] and testY[index,0] == 1:
-        n_good_result += 1
 
-    if y[0,0] < y[0,1] and testY[index,1] == 1:
-        n_good_result += 1
+    if class_image[index,0] == 1:
+        n_good += 1
+        if y[0, 0] >= y[0, 1]:
+            res_good += 1
 
-print(n_good_result*100/total_num_images)
+    if class_image[index,1] == 1:
+        n_defect += 1
+        if y[0,0] < y[0,1]:
+            res_defect += 1
+
+print(res_defect/n_defect, res_good/n_good, n_defect, n_good)
