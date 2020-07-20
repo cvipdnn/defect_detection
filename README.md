@@ -28,9 +28,9 @@ The accuracy for the testing set.
 
 Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512x512 image) 
 --- | --- | --- | ---
-1.a) | 100.0% | | 97.5% | 28944.9G
-1.b)| 100.0% | 0% | 63.2G
-2) | 99.56%  | 93.17%  |  
+1.a) | 100.0% | 99.56%|  28944.9G
+1.b)| 100.0% | 0% | 63.2G 
+2) | 97.5% | 93.17%  |  63.2G
 
 ## Code Location
 1. cnn: Convolutional Neural Network based Classifier
