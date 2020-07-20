@@ -20,7 +20,7 @@ a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mob
 
 b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
 
-2.Semantic Segmenation with Fully Convolutional Neural Network + Classifier 
+2. [Semantic Segmenation with Fully Convolutional Neural Network + Classifier](https://github.com/cvipdnn/defect_detection/tree/master/fcn) 
 In reference 4, it first runs semantic segmentation , then it runs a decision network to check if the whole image contains defect or not. In my current implementation, for simplicity, instead of using decision metwork, I am using the number of pixels with defect to classify. 
 
  
@@ -32,10 +32,11 @@ Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512
 1.b)| 100.0% | 0% | 63.2G 
 2)| 97.5% | 93.17% | 63.2G 
 
-### Code List and Location
+### The list of Code
 
 1. cnn: Convolutional Neural Network based Classifier
-2. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
+2. fcn: Semantic Segmentation based classifier
+3. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
 
 
 
