@@ -32,7 +32,7 @@ Accuracy(no defect) | 100.0% | 85.913% | 97.5%
 Accuracy(with defect) | 99.56% | 85.913% | 93.17%
 Multiplication FLOPs(512x512 image) | 28944.9G | 63.2G
 
-## Code Structure
+## Code 
 1. cnn: Convolutional Neural Network based Classifier
 2. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
 
@@ -40,7 +40,10 @@ Multiplication FLOPs(512x512 image) | 28944.9G | 63.2G
 
 ## References
 1.https://www.kaggle.com/c/1056lab-defect-detection/data
+
 2.https://github.com/XiaoJiNu/surface-defect-detection
+
 3.https://conferences.mpi-inf.mpg.de/dagm/2007/
+
 4.Segmentation-based deep-learning approach for surface-defect detection
 
