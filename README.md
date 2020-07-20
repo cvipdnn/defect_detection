@@ -26,13 +26,13 @@ In reference 4, it first runs semantic segmentation , then it runs a decision ne
  
 The accuracy for the testing set. 
 
-Method | 1.a) | 1.b) | 2) 
+Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512x512 image) 
 --- | --- | --- | ---
-Accuracy(no defect) | 100.0% | 85.913% | 97.5%
-Accuracy(with defect) | 99.56% | 85.913% | 93.17%
-Multiplication FLOPs(512x512 image) | 28944.9G | 63.2G
+1.a) | 100.0% | | 97.5% | 28944.9G
+1.b)| 100.0% | 0% | 63.2G
+2) | 99.56%  | 93.17%  |  
 
-## Code 
+## Code Location
 1. cnn: Convolutional Neural Network based Classifier
 2. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
 
