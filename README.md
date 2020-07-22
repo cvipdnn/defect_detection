@@ -20,24 +20,25 @@ a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mob
 
 b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
 
+
 2.[Semantic Segmenation with Fully Convolutional Neural Network + Classifier](https://github.com/cvipdnn/defect_detection/tree/master/fcn)
  
 In reference 4, it first runs semantic segmentation , then it runs a decision network to check if the whole image contains defect or not. In my current implementation, for simplicity, instead of using decision metwork, I am using the number of pixels with defect to classify. 
 
  
-### The accuracy of the testing set. 
+### The accuracy of the testing set
 
-Method |Accuracy(no defect)  | Accuracy(with defect)  | Multiplication FLOPs(512x512 image) 
+Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplications(512x512 image) 
 --- | --- | --- | ---
 1.a) | 100.0% | 99.56%|  28944.9G
 1.b)| 100.0% | 0% | 63.2G 
-2)| 97.5% | 93.17% | 63.2G 
+2)| 98.1% | 97.8% | 197.3G 
 
 ### The list of code
 
 1. cnn: Convolutional Neural Network based Classifier
 2. fcn: Semantic Segmentation based classifier
-3. utils: a tool used to analyze the performance of neural network, like multiplication FLOPs. 
+3. utils: a tool used to analyze the performance of neural network, like FLOPs of multiplications(Currently I only count Conv2D, SeparableConv2D and Dense layers and will add BatchNornalization later. Also note that default UpSampling2D uses nearest interpolation, which uses none multiplication). 
 
 
 

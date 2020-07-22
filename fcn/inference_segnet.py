@@ -18,61 +18,12 @@ from PIL import Image
 import cv2 
 from sklearn.model_selection import train_test_split
 import csv
-
+from keras.models import load_model
 
 IMAGE_ORDERING = 'channels_last'
 
 image_size= 512
 n_class = 2
-
-def SimpleFCN(input_height, input_width):
-    img_input = Input(shape=(input_height, input_width, 1))
-
-    x = Conv2D(48, (3, 3), strides=(2, 2), activation='relu', padding='same', name='conv1', data_format=IMAGE_ORDERING)(
-        img_input)
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool1', data_format=IMAGE_ORDERING)(x)
-
-    f0 = x;
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
-               data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
-               data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
-               data_format=IMAGE_ORDERING)(x)
-
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool2', data_format=IMAGE_ORDERING)(x)
-    f1 = x;
-
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv34',
-               data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv35',
-               data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv36',
-               data_format=IMAGE_ORDERING)(x)
-
-    x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool3', data_format=IMAGE_ORDERING)(x)
-
-    f3 = x
-    x = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc2',
-               data_format=IMAGE_ORDERING)(x)
-    x = UpSampling2D(size=(2, 2))(x)
-
-    f1 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc6',
-                data_format=IMAGE_ORDERING)(f1)
-
-    x = Add()([f1, x]);
-    x = UpSampling2D(size=(2, 2))(x);
-
-    f1 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc7',
-                data_format=IMAGE_ORDERING)(f0)
-
-    x = Add()([f1, x]);
-
-    x = UpSampling2D(size=(4, 4))(x)
-    x = Activation('softmax')(x);
-
-    model = Model(img_input, x)
-    return model
 
 
 dataDir='/home/cvip/deep_learning/datasets/DAGM_KaggleUpload/'
@@ -106,8 +57,7 @@ for dir in dirList:
 images = np.array(images)
 mask_images = np.array(mask_images)
 
-model = SimpleFCN(image_size, image_size)
-model.load_weights('./model/pretrained.h5')
+model = load_model('./model/fullModel.h5')
 model.summary()
 
 num_images = images.shape[0]
@@ -127,12 +77,12 @@ for index in range(num_images):
     n_pixel_defect = np.sum(label)
     if mask_images[index] != '0':
        n_defect = n_defect + 1
-       if n_pixel_defect > 4096:
+       if n_pixel_defect > 2048:
            res_defect = res_defect + 1
 
     else:
         n_good = n_good + 1
-        if n_pixel_defect <= 4096:
+        if n_pixel_defect <= 2048:
             res_good = res_good + 1
 
 print(res_defect/n_defect, res_good/n_good, n_defect, n_good)

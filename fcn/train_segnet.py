@@ -31,48 +31,64 @@ def SimpleFCN(input_height, input_width):
     x = Conv2D(48, (3, 3), strides=(2, 2), activation='relu', padding='same', name='conv1', data_format=IMAGE_ORDERING)(
         img_input)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool1', data_format=IMAGE_ORDERING)(x)
+    # 1/4 resolution now
 
-    f0 = x;
+    res_1_4 = x;
+    # residual layer
     x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv31',
                data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv32',
                data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv33',
+    x = Conv2D(48, (1, 1), strides=(1, 1), padding='same', name='conv33',
                data_format=IMAGE_ORDERING)(x)
 
+    #x = Add()([res_1_4, x])
+    x = Activation('relu')(x)
+
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool2', data_format=IMAGE_ORDERING)(x)
-    f1 = x;
+
+    #1/8 resolution now
+    res_1_8 = x;
 
     x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv34',
                data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv35',
+    x = SeparableConv2D(48, (3, 3), strides=(1, 1), activation='relu', padding='same', name='conv35',
                data_format=IMAGE_ORDERING)(x)
-    x = Conv2D(48, (1, 1), strides=(1, 1), activation='relu', padding='same', name='conv36',
+    x = Conv2D(48, (1, 1), strides=(1, 1), padding='same', name='conv36',
                data_format=IMAGE_ORDERING)(x)
+
+    #x = Add()([res_1_8, x])
+    x = Activation('relu')(x)
 
     x = MaxPooling2D((2, 2), strides=(2, 2), name='maxpool3', data_format=IMAGE_ORDERING)(x)
 
-    f3 = x
+    # 1/16 resolution now
+    res_1_16 = x
+
+
     x = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc2',
                data_format=IMAGE_ORDERING)(x)
     x = UpSampling2D(size=(2, 2))(x)
 
-    f1 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc6',
-                data_format=IMAGE_ORDERING)(f1)
+    # 1/8 resolution
+    class_res_1_8 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc6',
+                data_format=IMAGE_ORDERING)(res_1_8)
 
-    x = Add()([f1, x]);
+    x = Add()([class_res_1_8, x]);
     x = UpSampling2D(size=(2, 2))(x);
 
-    f1 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc7',
-                data_format=IMAGE_ORDERING)(f0)
+    class_res_1_4 = Conv2D(n_class, (3, 3), kernel_initializer='he_normal', activation='linear', padding='same', name='fc7',
+                data_format=IMAGE_ORDERING)(res_1_4)
 
-    x = Add()([f1, x]);
+    x = Add()([class_res_1_4, x]);
 
     x = UpSampling2D(size=(4, 4))(x)
     x = Activation('softmax')(x);
 
     model = Model(img_input, x)
     return model
+
+
 
 def calSamplenum(images, y):
     num_images = len(images)
@@ -161,10 +177,11 @@ model = SimpleFCN(image_size, image_size)
 model.load_weights('./model/pretrained.h5')
 model.summary()
 
+
 # 80% used for training , 20% used for validation
 x_train, x_valid, y_train, y_valid = train_test_split(images, mask_images, test_size=0.2, random_state = 32)
 
-batchsize = 16
+batchsize = 4
 train_gen = imageGenerator(x_train, y_train, batch_size = batchsize)
 val_gen = imageGenerator(x_valid, y_valid, batch_size = batchsize)
 
@@ -212,10 +229,9 @@ history = model.fit(x=train_gen,
                 callbacks = [mc],
                 epochs = epochs,
                 verbose = True)
-
+model.save('./model/fullModel.h5')
 #print(history.history.keys())
 # display history
-
 plt.subplot(211)
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
