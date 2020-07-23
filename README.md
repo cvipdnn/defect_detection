@@ -19,6 +19,7 @@ There are 6 different data sets and each simulated using a different texture and
 a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mobilenetv2)
 
 b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
+
 b.1) a small cnn network
 b.2) a smaller version of CNN based on MobileNetV2 by using network search( the feature map output from the layer 'block_5_depthwise_relu' in MobileNetV2)
 
