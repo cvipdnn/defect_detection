@@ -30,9 +30,9 @@ In reference 4, it first runs semantic segmentation , then it runs a decision ne
 
 Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplications(512x512 image) 
 --- | --- | --- | ---
-1.a) | 100.0% | 99.56%|  28944.9G
-1.b)| 100.0% | 0% | 63.2G 
-2)| 98.1% | 97.8% | 197.3G 
+1.a) | 100.0% | 99.56%|  28.9G
+1.b)| 100.0% | 0% | N/A 
+2)| 98.1% | 97.8% | 0.197G 
 
 ### The list of code
 

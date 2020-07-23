@@ -12,7 +12,10 @@ from keras.models import load_model
 from tensorflow import keras
 import pydot
 
-def calcutate_mul(model):
+
+# the return unit is GFLOPs
+
+def calcutate_mul(model, showDetails = True ):
     total_mul = 0
 
     input_size = 1
@@ -20,7 +23,7 @@ def calcutate_mul(model):
         input_size *= model.input.shape[i]
 
     # the input size , it is not used now
-    print(input_size)
+    #print(input_size)
     for layer in model.layers:
         if isinstance(layer, tf.keras.layers.Conv2D ) == True:
             #print(layer.kernel_size)
@@ -36,7 +39,8 @@ def calcutate_mul(model):
             current_layer_flops = layer.output.shape[3]*current_layer_flops
 
             total_mul += current_layer_flops
-            print(layer.name, current_layer_flops/1000/1000)
+            if showDetails:
+                print(layer.name, current_layer_flops/1000/1000/1000)
         if isinstance(layer, tf.keras.layers.SeparableConv2D ) == True:
             #print(layer.kernel_size)
             #print(layer.filters)
@@ -54,7 +58,9 @@ def calcutate_mul(model):
             current_layer_flops = layer.output.shape[3]*current_layer_flops
 
             total_mul += current_layer_flops
-            print(layer.name, current_layer_flops/1000/1000)
+
+            if showDetails:
+                print(layer.name, current_layer_flops/1000/1000/1000)
 
         if isinstance(layer, tf.keras.layers.Dense ) == True:
             # output size * input size
@@ -62,11 +68,13 @@ def calcutate_mul(model):
 
 
             total_mul += current_layer_flops
-            print(layer.name, current_layer_flops/1000/1000)
 
-    print("Summary\n=====================")
-    print(total_mul/1000/1000)
-    return total_mul
+            if showDetails:
+                print(layer.name, current_layer_flops/1000/1000/1000)
+
+    #print("Summary\n=====================")
+    #print(total_mul/1000/1000)
+    return total_mul/1000/1000/1000
 
 
 if __name__ == '__main__':
@@ -78,7 +86,8 @@ if __name__ == '__main__':
     model.summary()
 
 
-    calcutate_mul(model)
+    total_flops = calcutate_mul(model, True)
+    print( total_flops )
 
 
 
