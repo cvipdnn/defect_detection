@@ -1,5 +1,5 @@
 # Defect Classification/Detection
-This repo compare methods to defect classificaton and detecton. Reference [2] gives a general introduction for recent methods in this field. The dataset I used is [DAGM 2007](https://conferences.mpi-inf.mpg.de/dagm/2007/prizes.html) . 
+This repo compare methods to defect classificaton and detecton. Reference [2] gives a general introduction for recent methods in this field. The dataset for testing is [DAGM 2007](https://conferences.mpi-inf.mpg.de/dagm/2007/prizes.html) . 
 
 
 ## Getting Started
@@ -10,7 +10,7 @@ This repo compare methods to defect classificaton and detecton. Reference [2] gi
 * Opencv for python
 
 ### DAGM 2007 Dataset
-There are 6 different data sets and each simulated using a different texture and defect model. Each data set has training set which is under Train folder and testing set which is under Test folder.  Below are two sample images. The first image is without defects; the second image contains a scratch-shaped defect which appears as a thin dark line. The defect in the second image is weakly labeled by a surrounding ellipse, shown in the third image. 
+There are 6 different data sets and each simulates using a different texture and defect model. Each data set has training set which is under Train folder and testing set which is under Test folder.  Below are two sample images. The first image is without defects; the second image contains a scratch-shaped defect which appears as a thin dark line. The defect in the second image is weakly labeled by a surrounding ellipse, shown in the third image.  All the images are 512x512.
 ![](defect_mask.png) 
 
 ## Methods
@@ -21,11 +21,12 @@ a) [MobileNetV2](https://github.com/cvipdnn/defect_detection/tree/master/cnn/mob
 b) [SimpleCNN](https://github.com/cvipdnn/defect_detection/tree/master/cnn/simplecnn) 
 
 b.1) a small cnn network
-b.2) a smaller version of CNN based on MobileNetV2 by using network search( the feature map output from the layer 'block_5_depthwise_relu' in MobileNetV2)
+
+b.2) a smaller version of CNN based on MobileNetV2 by evaluating different feature outputs( final feature map output from the layer 'block_5_depthwise_relu' in MobileNetV2)
 
 Note that:
 1)From the accuracy below, 1.b.1) is not a good model to solve this problem. 
-2) Using the whole image to classify may not be a good idea, especially when the defect is very small. A better idea is to use tile based classifier, which is kind of like 'Semantic Segmentation'.
+2) Using the whole image to classify may not be a good idea, especially when the defect size is small. A better idea is to use tile based classifier, which is kind of like 'Semantic Segmentation'.
   
 
 2.[Semantic Segmenation with Fully Convolutional Neural Network + Classifier](https://github.com/cvipdnn/defect_detection/tree/master/fcn)
@@ -35,7 +36,7 @@ In reference 4, it first runs semantic segmentation , then it runs a decision ne
  
 ### The accuracy of the testing set
 
-Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplications(512x512 image) 
+Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplication 
 --- | --- | --- | ---
 1.a) | 100.0% | 99.56%|  28.9G
 1.b.1)| 100.0% | 0% | 0.063G
@@ -47,7 +48,7 @@ Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplications
 
 1. cnn: Convolutional Neural Network based Classifier
 2. fcn: Semantic Segmentation based classifier
-3. utils: a tool used to analyze the performance of neural network, like FLOPs of multiplications(Currently I only count Conv2D, SeparableConv2D and Dense layers and will add BatchNornalization later. Also note that default UpSampling2D uses nearest interpolation, which uses none multiplication). 
+3. utils: a tool used to analyze the performance of neural network, like FLOPs of multiplication(Currently I only count the multiplications from Conv2D, SeparableConv2D and Dense layers and will add BatchNornalization later. Also note that default UpSampling2D uses nearest interpolation, which uses none multiplication). 
 
 
 
