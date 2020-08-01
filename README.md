@@ -25,7 +25,7 @@ b.1) a small cnn network
 b.2) a smaller version of CNN based on MobileNetV2 by evaluating different feature outputs( final feature map output from the layer 'block_5_depthwise_relu' in MobileNetV2)
 
 Note that:
-1)From the accuracy below, 1.b.1) is not a good model to solve this problem. 
+1)From the accuracy table below, 1.b.1) is not a good model to solve this problem. 
 2) Using the whole image to classify may not be a good idea, especially when the defect size is small. A better idea is to use tile based classifier, which is kind of like 'Semantic Segmentation'.
   
 
@@ -41,7 +41,7 @@ Method |Accuracy(no defect)  | Accuracy(with defect)  | FLOPs of multiplication
 1.a) | 100.0% | 99.56%|  28.9G
 1.b.1)| 100.0% | 0% | 0.063G
 1.b.2)| 99.97% | 96.04% |  9.224G
-2)| 98.1% | 97.8% | 0.197G 
+2.| 98.1% | 97.8% | 0.197G 
 
 
 ### The list of code
